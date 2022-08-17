@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "go": "node ./src/app.js",
+    "start": "node ./src/app.js",
     "test": "mocha ./src/test/**.test.js"
   },
   "keywords": [],
