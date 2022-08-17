@@ -26,4 +26,4 @@ async function main() {
   console.log("Connectado ao servidor...")
   return app
 }
-export default main()
+main()
