@@ -8,7 +8,7 @@ class routes {
   update() {
     return {
       path: "/update",
-      method: "POST",
+      method: "GET",
       handler: async (req, res) => {
         const connect = new GConnect(config, credenciais).connect()
         const getlink = await new GoogleSheets().getLinks(connect)
