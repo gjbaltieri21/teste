@@ -9,7 +9,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = new Hapi.server({
-  port: 8000 || process.env.PORT,
+  port: process.env.PORT || 8000,
 })
 
 async function main() {
