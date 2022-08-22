@@ -4,8 +4,7 @@ const GoogleSheets = require("../doc-methods/g-sheets-methods")
 const config = require("../../config.json")
 const credenciais = require("../../credenciais.json")
 const ratingJSON = "rating.json"
-const path = require('path')
-const ratingJSON = path.join(__dirname, '../../rating.json')
+const fs = require("fs")
 
 async function writeFile(path, data) {
   let readFile = fs.readFileSync(path, { encoding: "utf-8" })
@@ -29,10 +28,6 @@ const worker = async (GetDataMethod, GetLinkMethod) => {
     const cluster = await Cluster.launch({
       concurrency: Cluster.CONCURRENCY_CONTEXT,
       maxConcurrency: 10,
-      args: [
-      '--no-sandbox',
-      '--disable-setuid-sandbox',
-    ]
     })
     for (let link of links) {
       await cluster.queue(link, GetDataMethod)

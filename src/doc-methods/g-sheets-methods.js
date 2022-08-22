@@ -19,7 +19,6 @@ class GoogleSheets {
   async updateLinks(connection, data){
     const doc = await connection
     const [sheet] = doc.sheetsByIndex
-
     try {
       const rows = await sheet.getRows()
       for(let i = 0; i < rows.length; i++){

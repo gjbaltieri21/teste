@@ -2,7 +2,6 @@ const fs = require('fs')
 const path = require('path')
 const ratingJSON = path.join(__dirname, '../../rating.json')
 
-
 async function writeFile(path, data) {
   let readFile = fs.readFileSync(path, { encoding: "utf-8" })
   readFile = JSON.parse(readFile)

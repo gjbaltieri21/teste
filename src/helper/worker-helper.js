@@ -1,6 +1,6 @@
 const { Cluster } = require("puppeteer-cluster")
 
-const worker = async (GetDataMethod, links, SaveDataMethod) => {
+const worker = async (GetDataMethod, links) => {
     const pid = process.pid
     try {
         const cluster = await Cluster.launch({
