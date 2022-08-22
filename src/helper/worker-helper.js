@@ -6,8 +6,9 @@ const worker = async (GetDataMethod, links, SaveDataMethod) => {
         const cluster = await Cluster.launch({
         concurrency: Cluster.CONCURRENCY_CONTEXT,
         maxConcurrency: 10,
+        puppeteerOptions: {
         headless: false,
-        args: ["--no-sandbox"]
+        args: ['--no-sandbox'],
       })
       for (let link of links) {
         await cluster.queue(link, GetDataMethod)
