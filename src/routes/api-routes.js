@@ -12,7 +12,7 @@ class routes {
           const links = await GetLinks()
           await worker(GetUrlData, links)
           await SaveData()
-          return res.response(links)
+          return res.response('ok')
         } catch (error) {
           res.response('deu ruim mano')
         }
