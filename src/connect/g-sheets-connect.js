@@ -1,6 +1,4 @@
-import { GoogleSpreadsheet } from "google-spreadsheet"
-// import credenciais from "../../credenciais.json" assert { type: "json" }
-// import config from "../../config.json" assert { type: "json" }
+const { GoogleSpreadsheet } = require( "google-spreadsheet")
 
 class GConnect {
   constructor(config, credenciais) {
@@ -18,4 +16,4 @@ class GConnect {
   }
 }
 
-export default GConnect
+module.exports = GConnect

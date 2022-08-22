@@ -30,11 +30,11 @@ class GoogleSheets {
         await rows[i].save()
         console.log(`${rows[i].loja} salvo com sucesso!`)
       }
-      return 'acabou'
+      return
     } catch (error) {
       console.error('deu ruim', error)
     }
   }
 }
 
-export default GoogleSheets
+module.exports = GoogleSheets

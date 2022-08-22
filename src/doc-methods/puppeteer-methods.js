@@ -1,18 +1,18 @@
-import * as puppeteer from "puppeteer"
+const fs = require('fs')
+const ratingJSON = 'rating.json'
 
-async function getData(url) {
-  const browser = await puppeteer.launch({ headless: true, args: [
-    '--no-sandbox',
-    '--disable-setuid-sandbox',
-    '--disable-dev-shm-usage',
-    '--disable-accelerated-2d-canvas',
-    '--no-first-run',
-    '--no-zygote',
-    '--disable-gpu'
-  ], })
-  const page = await browser.newPage()
-  await page.setDefaultNavigationTimeout(0)
-  await page.goto(url, { waitUntil: "load" })
+
+async function writeFile(path, data) {
+  let readFile = fs.readFileSync(path, { encoding: "utf-8" })
+  readFile = JSON.parse(readFile)
+  readFile.push(data)
+  return fs.writeFileSync(path, JSON.stringify(readFile, null, 2), {
+    encoding: "utf8",
+  })
+}
+
+const GetUrlData = async ({ page, data: url }) => {
+  await page.goto(url)
   const xpathStoreName = await page.$x(
     '//*[@id="hd"]/div/div/div[1]/div[2]/div[1]/div/div/div[1]/div[1]/a/span'
   )
@@ -29,7 +29,14 @@ async function getData(url) {
   )
   const findrating = await page.$eval("*", (el) => el.innerText)
   const rating = findrating.match(/[\d]{0,3}[.][\d][%]/)
-  await browser.close()
-  return { link: url, loja: storeName, seguidores: followers, rating: rating[0] }
+  let result = {
+    link: url,
+    loja: storeName,
+    seguidores: followers,
+    rating: rating[0],
+  }
+  writeFile(ratingJSON, result)
+  return result
 }
-export default getData
+
+module.exports = {GetUrlData}

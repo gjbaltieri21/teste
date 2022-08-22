@@ -1,27 +1,22 @@
-import GConnect from "../connect/g-sheets-connect.js"
-import GoogleSheets from "../doc-methods/g-sheets-methods.js"
-import config from "../../config.json" assert { type: "json" }
-import credenciais from "../../credenciais.json" assert { type: "json" }
-import getData from '../doc-methods/puppeteer-methods.js'
+const { GetLinks, SaveData } = require("../helper/GConnect-helper")
+const { worker } = require("../helper/worker-helper")
+const {GetUrlData} = require('../doc-methods/puppeteer-methods')
 
 class routes {
   update() {
     return {
       path: "/update",
-      method: "GET",
+      method: "POST",
       handler: async (req, res) => {
-        const connect = new GConnect(config, credenciais).connect()
-        const getlink = await new GoogleSheets().getLinks(connect)
-        let data = []
-        console.log(getlink)
-        for (let i = 0; i < getlink.length; i++) {
-          const aliData = await getData(getlink[i])
-          data.push(aliData)
+        try {
+          const links = await GetLinks()
+          await worker(GetUrlData, links)
+          await SaveData()
+          return res.response(links)
+        } catch (error) {
+          res.response('deu ruim mano')
         }
-        const setData = await new GoogleSheets().updateLinks(connect, data)
-        console.log("setdata", setData)
-        return res.response(data)
-      }
+      },
     }
   }
   home() {
@@ -29,10 +24,10 @@ class routes {
       path: "/",
       method: "GET",
       handler: async (req, res) => {
-        return res.view('index')
-      }
+          return res.view("index")
+      },
     }
   }
 }
 
-export default routes
+module.exports = routes

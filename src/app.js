@@ -1,29 +1,51 @@
-import Hapi, { server } from "@hapi/hapi"
-import routes from "./routes/api-routes.js"
-import ejs from 'ejs'
-import vision from '@hapi/vision'
-import path from 'path'
-import { fileURLToPath } from 'url'
+const Hapi = require( "@hapi/hapi")
+const routes = require( "./routes/api-routes.js")
+const ejs = require( 'ejs')
+const vision = require( '@hapi/vision')
+const path = require( 'path')
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
 
-const app = new Hapi.server({
-  port: process.env.PORT || 8000,
-})
+if (cluster.isMaster) {
+  console.log('Master process is running');
+  // Fork workers
+  for (let i = 0; i < numCPUs; i++) {
+    cluster.fork();
+  }
+} else {
+  const app = new Hapi.server({
+  port: 7000 || process.env.PORT})
 
-async function main() {
-  await app.register(vision)
-  app.views({
-    engines: {
-      ejs: ejs,
-    },
-    relativeTo: __dirname,
-    path: './templates',
-  })
-  app.route([new routes().home(), new routes().update()])
-  await app.start()
-  console.log("Connectado ao servidor...")
-  return app
+  async function main() {
+    await app.register(vision)
+    app.views({
+      engines: {
+        ejs: ejs,
+      },
+      relativeTo: path.join(__dirname),
+      path: './templates',
+    })
+    app.route([new routes().home(), new routes().update()])
+    await app.start()
+    console.log("Connectado ao servidor...")
+    return app
+  }
+  main()
 }
-main()
+
+// async function main() {
+//   await app.register(vision)
+//   app.views({
+//     engines: {
+//       ejs: ejs,
+//     },
+//     relativeTo: path.join(__dirname),
+//     path: './templates',
+//   })
+//   app.route([new routes().home(), new routes().update()])
+//   await app.start()
+//   console.log("Connectado ao servidor...")
+//   return app
+// }
+// module.exports = main()
