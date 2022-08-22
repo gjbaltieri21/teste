@@ -2,8 +2,8 @@ const config = require("../../config.json")
 const credenciais = require("../../credenciais.json")
 const GConnect = require("../connect/g-sheets-connect.js")
 const GoogleSheets = require("../doc-methods/g-sheets-methods.js")
-const fs = require('fs')
-const ratingJSON = 'rating.json'
+const path = require('path')
+const ratingJSON = path.join(__dirname, '../../rating.json')
 
 async function GetLinks() {
     const connect = await new GConnect(config, credenciais).connect()
