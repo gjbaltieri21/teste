@@ -4,7 +4,8 @@ const GoogleSheets = require("../doc-methods/g-sheets-methods")
 const config = require("../../config.json")
 const credenciais = require("../../credenciais.json")
 const ratingJSON = "rating.json"
-const fs = require("fs")
+const path = require('path')
+const ratingJSON = path.join(__dirname, '../../rating.json')
 
 async function writeFile(path, data) {
   let readFile = fs.readFileSync(path, { encoding: "utf-8" })
