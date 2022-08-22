@@ -2,6 +2,7 @@ const config = require("../../config.json")
 const credenciais = require("../../credenciais.json")
 const GConnect = require("../connect/g-sheets-connect.js")
 const GoogleSheets = require("../doc-methods/g-sheets-methods.js")
+const fs = require('fs')
 const path = require('path')
 const ratingJSON = path.join(__dirname, '../../rating.json')
 
