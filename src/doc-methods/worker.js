@@ -29,6 +29,10 @@ const worker = async (GetDataMethod, GetLinkMethod) => {
     const cluster = await Cluster.launch({
       concurrency: Cluster.CONCURRENCY_CONTEXT,
       maxConcurrency: 10,
+      args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox',
+    ]
     })
     for (let link of links) {
       await cluster.queue(link, GetDataMethod)
