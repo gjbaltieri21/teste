@@ -1,5 +1,6 @@
 const fs = require('fs')
-const ratingJSON = 'rating.json'
+const path = require('path')
+const ratingJSON = path.join(__dirname, '../../rating.json')
 
 
 async function writeFile(path, data) {
